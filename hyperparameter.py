@@ -23,7 +23,7 @@ preprocess_sample_size = 500
 """
 Number of epochs from which we decrease or increase our learning rate.
 """
-num_ep_decrease = 25
+num_ep_decrease = 15
 
 """
 Number of epochs. If you experiment with more complex networks you
