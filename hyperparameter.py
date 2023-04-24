@@ -11,7 +11,7 @@ num_classes = 7
 """
 Number of training examples per batch.
 """
-batch_size = 50
+batch_size = 150
 
 """
 Sample size for calculating the mean and standard deviation of the
