@@ -19,6 +19,7 @@ class Datasets():
 
         # Dictionaries for (label index) <--> (class name)
         self.idx_to_class = {}
+        self.class_to_idx = {}
 
         # For storing list of classes
         self.classes = [""] * hp.num_classes
@@ -135,8 +136,20 @@ class Datasets():
             shuffle=shuffle,
             classes=classes_for_flow)
 
-        return data_gen
+        # Setup the dictionaries if not already done
+        if not bool(self.idx_to_class):
+            unordered_classes = []
+            for dir_name in os.listdir(path):
+                if os.path.isdir(os.path.join(path, dir_name)):
+                    unordered_classes.append(dir_name)
 
+            for img_class in unordered_classes:
+                self.idx_to_class[data_gen.class_indices[img_class]] = img_class
+                self.class_to_idx[img_class] = int(data_gen.class_indices[img_class])
+                self.classes[int(data_gen.class_indices[img_class])] = img_class
+
+        return data_gen
+    
 # To make sure it's working fine on a specific training data
 # if __name__ == '__main__':
 #     dataset = Datasets("data", 1)
