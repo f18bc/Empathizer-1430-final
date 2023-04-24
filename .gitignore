@@ -1,3 +1,5 @@
+/Empathizers/*
+
 data/
 **/.DS_Store
 **/logs/
@@ -6,3 +8,4 @@ data/
 logs/*
 checkpoints/*
 misclassified/*
+
