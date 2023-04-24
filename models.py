@@ -12,22 +12,25 @@ from keras.applications import MobileNetV3Small
 class YourModel(tf.keras.Model):
     def __init__(self):
         super(YourModel, self).__init__()
-
+        # Hyperparameters
+        self.learning_rate = 5e-4
+        # Momentum on the gradient (for momentum-based optimizer)
+        self.momentum = 0.01
         # Define an optimizer
-        self.optimizer = tf.keras.optimizers.Adam(learning_rate=hp.learning_rate)
-        # self.optimizer = tf.keras.optimizers.SGD(learning_rate=hp.learning_rate, momentum=hp.momentum)
+        self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
+        # self.optimizer = tf.keras.optimizers.SGD(learning_rate=hp.learning_rate, momentum=self.momentum)
         
         input_shape = (hp.batch_size, hp.img_size, hp.img_size, 3)
         self.architecture = [
               # Add layers here separated by commas.
-              Conv2D(filters = 128, kernel_size = (5, 5), padding="same", input_shape = input_shape),
+              Conv2D(filters = 128, kernel_size = (5, 5), padding="same"),
               BatchNormalization(),
               ReLU(),
               
               Conv2D(filters = 128, kernel_size = (5, 5), padding="same"),
               BatchNormalization(),
               ReLU(),
-              MaxPool2D(pool_size = (4, 4)),
+              MaxPool2D(pool_size = 2),
 
               Conv2D(filters = 256, kernel_size = (5, 5), padding="same"),
               BatchNormalization(),
@@ -36,21 +39,33 @@ class YourModel(tf.keras.Model):
               Conv2D(filters = 256, kernel_size = (5, 5), padding="same"),
               BatchNormalization(),
               ReLU(),
-              MaxPool2D(pool_size = (4, 4)),
-              
-              Conv2D(filters = 512, kernel_size = (5, 5), padding="same"),
-              BatchNormalization(),
-              ReLU(),
-            
-              Conv2D(filters = 512, kernel_size = (5, 5), padding="same"),
-              BatchNormalization(),
-              ReLU(),
-              MaxPool2D(pool_size = (4, 4)),
+              MaxPool2D(pool_size = 4),
               
               Flatten(),
               Dense(units = 400, activation = "relu"),
               Dropout(0.2),
               Dense(units = hp.num_classes, activation = "softmax")   
+              
+              # Alternative structure
+            #   Conv2D(filters = 64, kernel_size = 3, activation = 'relu', padding="same"),
+            #   MaxPool2D(pool_size = 2),
+            #   Conv2D(filters = 128, kernel_size = 3, activation = 'relu', padding="same"),
+            #   MaxPool2D(pool_size = 2),
+            #   Conv2D(filters = 256, kernel_size = 3, activation = 'relu', padding="same"),
+            #   MaxPool2D(pool_size = 2),
+            #   Conv2D(filters = 512, kernel_size = 3, activation = 'relu', padding="same"),
+            #   MaxPool2D(pool_size = 2),
+            #   Flatten(),
+            #   Dense(units = 400, activation = "relu"),
+            #   Dropout(0.1),
+            #   Dense(units = 200, activation = "relu"),
+            #   Dropout(0.1),
+            #   Dense(units = 150, activation = "relu"),
+            #   Dropout(0.1),
+            #   Dense(units = 100, activation = "relu"),
+            #   Dropout(0.1),
+            #   Dense(units = hp.num_classes, activation="softmax")
+              
         ]
 
     def call(self, x):
