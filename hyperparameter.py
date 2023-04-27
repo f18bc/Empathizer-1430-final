@@ -23,14 +23,14 @@ preprocess_sample_size = 500
 """
 Number of epochs from which we decrease or increase our learning rate.
 """
-num_ep_decrease = 15
+num_ep_decrease = 10
 
 """
 Number of epochs. If you experiment with more complex networks you
 might need to increase this. Likewise if you add regularization that
 slows training.
 """
-num_epochs = 30
+num_epochs = 20
 
 """
 Maximum number of weight files to save to checkpoint directory. If
