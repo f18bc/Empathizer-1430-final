@@ -224,8 +224,8 @@ def main():
     elif ARGS.task == '2':
         model = MobileNetModel()
         checkpoint_path = "checkpoints" + os.sep + \
-            "vgg_model" + os.sep + timestamp + os.sep
-        logs_path = "logs" + os.sep + "vgg_model" + \
+            "mobilnet_model" + os.sep + timestamp + os.sep
+        logs_path = "logs" + os.sep + "mobilnet_model" + \
             os.sep + timestamp + os.sep
         model(tf.keras.Input(shape=(224, 224, 3)))
         
