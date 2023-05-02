@@ -30,7 +30,7 @@ Number of epochs. If you experiment with more complex networks you
 might need to increase this. Likewise if you add regularization that
 slows training.
 """
-num_epochs = 20
+num_epochs = 50
 
 """
 Maximum number of weight files to save to checkpoint directory. If

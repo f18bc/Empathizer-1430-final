@@ -6,7 +6,7 @@ from datetime import datetime
 import tensorflow as tf
 
 import hyperparameter as hp
-from models import YourModel, VGGModel, MobileNetModel
+from models import YourModel, VGGModel, MobileNetModel, ResNetModel , EfficientNet
 from preprocess import Datasets
 from skimage.transform import resize
 from tensorboard_utils import \
@@ -29,11 +29,13 @@ def parse_args():
     parser.add_argument(
         '--task',
         required=True,
-        choices=['1', '2', '3'],
+        choices=['1', '2', '3', '4', '5'],
         help='''Which task of the assignment to run -
         task 1: training a CNN from scratch, 
         task 2: training a head with base model MobileNetV2/V3
-        task 3: training a head with base model VGG16.''')
+        task 3: training a head with base model VGG16.
+        task 4: training a head with base model Residual Net 50 (ResNet-50).
+        task 5: training a head with base model Efficientnet (EfficientNetB7).''')
     parser.add_argument(
         '--data',
         default='data'+os.sep,
@@ -59,7 +61,7 @@ def parse_args():
         its checkpoint.''')
     parser.add_argument(
         '--lime-image',
-        default='test/Bedroom/image_0003.jpg',
+        default='data/test/angry/13890.jpg',
         help='''Name of an image in the dataset to use for LIME evaluation.''')
 
     return parser.parse_args()
@@ -231,20 +233,40 @@ def main():
         
         model.mobilenet.summary()
         model.head.summary()
-        
-    else:
+    
+    elif ARGS.task == '3':    
         model = VGGModel()
         checkpoint_path = "checkpoints" + os.sep + \
             "vgg_model" + os.sep + timestamp + os.sep
         logs_path = "logs" + os.sep + "vgg_model" + \
             os.sep + timestamp + os.sep
         model(tf.keras.Input(shape=(224, 224, 3)))
+        
+        model.vgg16.summary()
+        model.head.summary()
+    elif ARGS.task == '4':
+        model = ResNetModel()
+        checkpoint_path = "checkpoints" + os.sep + \
+            "resnet_model" + os.sep + timestamp + os.sep
+        logs_path = "logs" + os.sep + "resnet_model" + \
+            os.sep + timestamp + os.sep
+        model(tf.keras.Input(shape=(224, 224, 3)))
 
         # Print summaries for both parts of the model 
-        model.vgg16.summary()
+        model.resnet50.summary()
         model.head.summary()
         # # Load base of VGG model
         # model.vgg16.load_weights(ARGS.load_vgg, by_name=True)
+    else:
+        model = EfficientNet()
+        checkpoint_path = "checkpoints" + os.sep + \
+            "efficient_model" + os.sep + timestamp + os.sep
+        logs_path = "logs" + os.sep + "efficient_model" + \
+            os.sep + timestamp + os.sep
+        model(tf.keras.Input(shape=(224, 224, 3)))
+        # Print summaries for both parts of the model 
+        model.efficientnet.summary()
+        model.head.summary()
 
     # Load checkpoints
     if ARGS.load_checkpoint is not None:
