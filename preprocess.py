@@ -33,9 +33,9 @@ class Datasets():
         # task == '2': using a pretrained vgg with our own head
         # task == '3': using a pretrained mobilnet with our own head
         self.train_data = self.get_data(
-            os.path.join(self.data_path, "train/"), task=='2' or task=='3', shuffle = True, augment = True)
+            os.path.join(self.data_path, "train/"), task=='2' or task=='3' or task=='4' or task=='5', shuffle = True, augment = True)
         self.test_data = self.get_data(
-            os.path.join(self.data_path, "test/"), task=='2' or task=='3', shuffle = False, augment = False)
+            os.path.join(self.data_path, "test/"), task=='2' or task=='3' or task=='4' or task=='5', shuffle = False, augment = False)
 
     def calc_mean_and_std(self):
         """ Calculate mean and standard deviation of a sample of the
@@ -79,6 +79,10 @@ class Datasets():
             img = tf.keras.applications.mobilenet_v3.preprocess_input(img)
         elif self.task == '3':
             img = tf.keras.applications.vgg16.preprocess_input(img)
+        elif self.task == '4':
+            img = tf.keras.applications.resnet50.preprocess_input(img)
+        elif self.task == '5':
+            img = tf.keras.applications.efficientnet.preprocess_input(img)
         else:
             img = img / 255.
             # standardize the image

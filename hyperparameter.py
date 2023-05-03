@@ -11,7 +11,7 @@ num_classes = 7
 """
 Number of training examples per batch.
 """
-batch_size = 150
+batch_size = 100
 
 """
 Sample size for calculating the mean and standard deviation of the
@@ -23,14 +23,14 @@ preprocess_sample_size = 500
 """
 Number of epochs from which we decrease or increase our learning rate.
 """
-num_ep_decrease = 10
+num_ep_decrease = 15
 
 """
 Number of epochs. If you experiment with more complex networks you
 might need to increase this. Likewise if you add regularization that
 slows training.
 """
-num_epochs = 50
+num_epochs = 30
 
 """
 Maximum number of weight files to save to checkpoint directory. If

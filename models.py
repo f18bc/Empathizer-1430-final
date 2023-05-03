@@ -90,7 +90,7 @@ class MobileNetModel(tf.keras.Model):
         super(MobileNetModel, self).__init__()
 
         # Hyperparameters
-        self.learning_rate = 1e-3
+        self.learning_rate = 1e-4
         # Momentum on the gradient (for momentum-based optimizer)
         self.momentum = 0.01
         
@@ -104,25 +104,25 @@ class MobileNetModel(tf.keras.Model):
         self.mobilenet.trainable = False
         
         # Add a classification head
-        #self.head = [Flatten(),
-        #             Dense(200),
-        #             BatchNormalization(),
-        #             LeakyReLU(),
-        #             Dense(hp.num_classes, activation='softmax')]
         self.head = [Flatten(),
-                     Dense(units = 1024),
+                     Dense(200),
                      BatchNormalization(),
-                     ReLU(),
-                     Dropout(.4),
-                     Dense(units = 512),
-                     BatchNormalization(),
-                     ReLU(),
-                     Dropout(.3),
-                     Dense(units = 256),
-                     BatchNormalization(),
-                     ReLU(),
-                     Dropout(.2),
+                     LeakyReLU(),
                      Dense(hp.num_classes, activation='softmax')]
+        #self.head = [Flatten(),
+        #             Dense(units = 1024),
+        #             BatchNormalization(),
+        #             ReLU(),
+        #             Dropout(.4),
+        #             Dense(units = 512),
+        #             BatchNormalization(),
+        #             ReLU(),
+        #             Dropout(.3),
+        #             Dense(units = 256),
+        #             BatchNormalization(),
+        #             ReLU(),
+        #             Dropout(.2),
+        #             Dense(hp.num_classes, activation='softmax')]
         self.head = tf.keras.Sequential(self.head, name="mbt_head") # mobilenet head
 
     def call(self, x):
@@ -160,26 +160,26 @@ class VGGModel(tf.keras.Model):
         self.vgg16.trainable = False
         
         # Add a classification head
-        #self.head = [Flatten(),
-        #             Dense(200),
-        #             BatchNormalization(),
-        #             LeakyReLU(),
-        #             Dense(hp.num_classes, activation='softmax')]
         self.head = [Flatten(),
-                     Dense(units = 1024),
+                     Dense(200),
                      BatchNormalization(),
-                     ReLU(),
-                     Dropout(.4),
-                     Dense(units = 512),
-                     BatchNormalization(),
-                     ReLU(),
-                     Dropout(.3),
-                     Dense(units = 256),
-                     BatchNormalization(),
-                     ReLU(),
-                     Dropout(.2),
+                     LeakyReLU(),
                      Dense(hp.num_classes, activation='softmax')]
-        
+        #self.head = [Flatten(),
+        #             Dense(units = 1024),
+        #             BatchNormalization(),
+        #             ReLU(),
+        #             Dropout(.4),
+        #             Dense(units = 512),
+        #             BatchNormalization(),
+        #             ReLU(),
+        #             Dropout(.3),
+        #             Dense(units = 256),
+        #             BatchNormalization(),
+        #             ReLU(),
+        #             Dropout(.2),
+        #             Dense(hp.num_classes, activation='softmax')]
+        #
         self.head = tf.keras.Sequential(self.head, name="vgg_head")
 
     def call(self, x):
