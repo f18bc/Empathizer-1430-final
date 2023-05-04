@@ -61,7 +61,7 @@ def parse_args():
         its checkpoint.''')
     parser.add_argument(
         '--lime-image',
-        default='data/test/angry/13890.jpg',
+        default='data/test/angry/23.jpg',
         help='''Name of an image in the dataset to use for LIME evaluation.''')
 
     return parser.parse_args()
@@ -226,8 +226,8 @@ def main():
     elif ARGS.task == '2':
         model = MobileNetModel()
         checkpoint_path = "checkpoints" + os.sep + \
-            "mobilnet_model" + os.sep + timestamp + os.sep
-        logs_path = "logs" + os.sep + "mobilnet_model" + \
+            "mobilenet_model" + os.sep + timestamp + os.sep
+        logs_path = "logs" + os.sep + "mobilenet_model" + \
             os.sep + timestamp + os.sep
         model(tf.keras.Input(shape=(224, 224, 3)))
         

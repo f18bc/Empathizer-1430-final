@@ -15,7 +15,7 @@ class YourModel(tf.keras.Model):
     def __init__(self):
         super(YourModel, self).__init__()
         # Hyperparameters
-        self.learning_rate = 1e-3
+        self.learning_rate = 5e-4
         # Momentum on the gradient (for momentum-based optimizer)
         self.momentum = 0.01
         # Define an optimizer
@@ -90,14 +90,15 @@ class MobileNetModel(tf.keras.Model):
         super(MobileNetModel, self).__init__()
 
         # Hyperparameters
-        self.learning_rate = 1e-4
+        self.learning_rate = 5e-4
         # Momentum on the gradient (for momentum-based optimizer)
         self.momentum = 0.01
         
         # Initialize the optimizer
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
         # self.optimizer = tf.keras.optimizers.SGD(learning_rate=hp.learning_rate, momentum=self.momentum)
-
+        
+        # Create the base model of MobileNetModel
         self.mobilenet = MobileNetV3Small(include_top=False, weights='imagenet') #, pooling = 'max'
 
         # Freeze the convolutional base
@@ -153,7 +154,7 @@ class VGGModel(tf.keras.Model):
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
         # self.optimizer = tf.keras.optimizers.SGD(learning_rate=hp.learning_rate, momentum=self.momentum)
 
-        # Create the base model of VGG16
+        # Create the base model of VGGModel
         self.vgg16 = VGG16(include_top=False, weights = 'imagenet')
 
         # Freeze the convolutional base
@@ -165,21 +166,8 @@ class VGGModel(tf.keras.Model):
                      BatchNormalization(),
                      LeakyReLU(),
                      Dense(hp.num_classes, activation='softmax')]
-        #self.head = [Flatten(),
-        #             Dense(units = 1024),
-        #             BatchNormalization(),
-        #             ReLU(),
-        #             Dropout(.4),
-        #             Dense(units = 512),
-        #             BatchNormalization(),
-        #             ReLU(),
-        #             Dropout(.3),
-        #             Dense(units = 256),
-        #             BatchNormalization(),
-        #             ReLU(),
-        #             Dropout(.2),
-        #             Dense(hp.num_classes, activation='softmax')]
-        #
+
+
         self.head = tf.keras.Sequential(self.head, name="vgg_head")
 
     def call(self, x):
@@ -211,34 +199,21 @@ class ResNetModel(tf.keras.Model):
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
         # self.optimizer = tf.keras.optimizers.SGD(learning_rate=hp.learning_rate, momentum=self.momentum)
 
-        # Create the base model of VGG16
+        # Create the base model of ResNetModel
         self.resnet50 = ResNet50(include_top=False, pooling = 'max' ,weights='imagenet')
 
         # Freeze the convolutional base
         self.resnet50.trainable = False
         
         # Add a classification head
-        #self.head = [Flatten(),
-        #             Dense(200),
-        #             BatchNormalization(),
-        #             LeakyReLU(),
-        #             Dropout(.3),
-        #             Dense(hp.num_classes, activation='softmax')]
-        
         self.head = [Flatten(),
-                     Dense(units = 1024),
+                     Dense(200),
                      BatchNormalization(),
-                     ReLU(),
-                     Dropout(.4),
-                     Dense(units = 512),
-                     BatchNormalization(),
-                     ReLU(),
+                     LeakyReLU(),
                      Dropout(.3),
-                     Dense(units = 256),
-                     BatchNormalization(),
-                     ReLU(),
-                     Dropout(.2),
                      Dense(hp.num_classes, activation='softmax')]
+        
+        
 
         self.head = tf.keras.Sequential(self.head, name="resnet_head")
 
@@ -273,7 +248,7 @@ class EfficientNet(tf.keras.Model):
         self.optimizer = tf.keras.optimizers.Adam(learning_rate=self.learning_rate)
         # self.optimizer = tf.keras.optimizers.SGD(learning_rate=hp.learning_rate, momentum=self.momentum)
 
-        # Create the base model of VGG16
+        # Create the base model of EfficientNet
         self.efficientnet = EfficientNetB4(include_top=False, weights = 'imagenet') # pooling = 'avg'
 
 
@@ -282,25 +257,12 @@ class EfficientNet(tf.keras.Model):
             layer.trainable = False
         
         # Add a classification head
-        #self.head = [Flatten(),
-        #             Dense(200),
-        #             BatchNormalization(),
-        #             LeakyReLU(),
-        #             Dense(hp.num_classes, activation='softmax')]
         self.head = [Flatten(),
-                     Dense(units = 1024),
+                     Dense(200),
                      BatchNormalization(),
-                     ReLU(),
-                     Dropout(.4),
-                     Dense(units = 512),
-                     BatchNormalization(),
-                     ReLU(),
-                     Dropout(.3),
-                     Dense(units = 256),
-                     BatchNormalization(),
-                     ReLU(),
-                     Dropout(.2),
+                     LeakyReLU(),
                      Dense(hp.num_classes, activation='softmax')]
+
         
         self.head = tf.keras.Sequential(self.head, name="efficient_head")
 
