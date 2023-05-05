@@ -67,11 +67,17 @@ def parse_args():
     return parser.parse_args()
 
 
-def LIME_explainer(model, path, preprocess_fn, timestamp):
+def LIME_explainer(model, path, preprocess_fn, timestamp, task):
     """
     This function takes in a trained model and a path to an image and outputs 4
     visual explanations using the LIME model
     """
+    if task == '1':
+        pretrained = False
+    else:
+        pretrained = True
+        
+    img_size = 224 if pretrained else hp.img_size
 
     save_directory = "lime_explainer_images" + os.sep + timestamp
     if not os.path.exists("lime_explainer_images"):
@@ -95,12 +101,13 @@ def LIME_explainer(model, path, preprocess_fn, timestamp):
         plt.show()
 
         image_index += 1
+    
 
     # Read the image and preprocess it as before
     image = imread(path)
     if len(image.shape) == 2:
         image = np.stack([image, image, image], axis=-1)
-    image = resize(image, (hp.img_size, hp.img_size, 3), preserve_range=True)
+    image = resize(image, (img_size, img_size, 3), preserve_range=True)
     image = preprocess_fn(image)
     
 
@@ -293,7 +300,7 @@ def main():
         # i.e. python run.py --evaluate --lime-image test/Bedroom/image_003.jpg
         # path = ARGS.data + os.sep + ARGS.lime_image
         path = ARGS.lime_image
-        LIME_explainer(model, path, datasets.preprocess_fn, timestamp)
+        LIME_explainer(model, path, datasets.preprocess_fn, timestamp, ARGS.task)
     else:
         train(model, datasets, checkpoint_path, logs_path, init_epoch)
 

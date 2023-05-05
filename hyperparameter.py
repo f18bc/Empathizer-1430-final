@@ -1,7 +1,7 @@
 """
 Image size for CNN. pretrained model must take in image size of 224, so that is hard-coded elsewhere.
 """
-img_size = 224
+img_size = 48
 
 """
 The number of facial emotion classes.
@@ -11,7 +11,7 @@ num_classes = 7
 """
 Number of training examples per batch.
 """
-batch_size = 125
+batch_size = 50
 
 """
 Sample size for calculating the mean and standard deviation of the
@@ -30,7 +30,7 @@ Number of epochs. If you experiment with more complex networks you
 might need to increase this. Likewise if you add regularization that
 slows training.
 """
-num_epochs = 50
+num_epochs = 30
 
 """
 Maximum number of weight files to save to checkpoint directory. If
