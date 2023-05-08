@@ -2,12 +2,17 @@ import numpy as np
 import cv2
 import tensorflow as tf
 
+from models import MobileNetModel
+
+
 # Load the Haar Cascade for face detection
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-with open('model.json', 'r') as f:
-    model_json = f.read()
-model = tf.keras.models.model_from_json(model_json)
+with tf.keras.utils.custom_object_scope({'MobileNetModel': MobileNetModel}):
+    # Load the JSON model
+    with open('model.json', 'r') as f:
+        model_json = f.read()
+    model = tf.keras.models.model_from_json(model_json)
 
 # Load H5 weights
 model.load_weights('mobilenet.weights.e026-acc0.6956.h5')
