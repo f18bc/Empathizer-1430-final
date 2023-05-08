@@ -1,12 +1,16 @@
 import numpy as np
 import cv2
-from keras.models import load_model
+import tensorflow as tf
 
 # Load the Haar Cascade for face detection
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
-# Load the pretrained Mini-Xception for facial expression recognition
-model = load_model('test/fer2013_mini_XCEPTION.119-0.65.hdf5')
+with open('model.json', 'r') as f:
+    model_json = f.read()
+model = tf.keras.models.model_from_json(model_json)
+
+# Load H5 weights
+model.load_weights('mobilenet.weights.e026-acc0.6956.h5')
 
 # Expression labels
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
