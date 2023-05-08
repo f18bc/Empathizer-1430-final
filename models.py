@@ -102,7 +102,7 @@ class MobileNetModel(tf.keras.Model):
         self.mobilenet = MobileNetV3Small(include_top=False, weights='imagenet') #, pooling = 'max'
 
         # Freeze the convolutional base
-        self.mobilenet.trainable = False
+        self.mobilenet.trainable = True
         
         # Add a classification head
         self.head = [Flatten(),
@@ -125,6 +125,8 @@ class MobileNetModel(tf.keras.Model):
         #             Dropout(.2),
         #             Dense(hp.num_classes, activation='softmax')]
         self.head = tf.keras.Sequential(self.head, name="mbt_head") # mobilenet head
+        tf.keras.utils.get_custom_objects()['MobileNetModel'] = MobileNetModel
+        
 
     def call(self, x):
         x = self.mobilenet(x)
@@ -158,7 +160,7 @@ class VGGModel(tf.keras.Model):
         self.vgg16 = VGG16(include_top=False, weights = 'imagenet')
 
         # Freeze the convolutional base
-        self.vgg16.trainable = False
+        self.vgg16.trainable = True
         
         # Add a classification head
         self.head = [Flatten(),
@@ -203,14 +205,14 @@ class ResNetModel(tf.keras.Model):
         self.resnet50 = ResNet50(include_top=False, pooling = 'max' ,weights='imagenet')
 
         # Freeze the convolutional base
-        self.resnet50.trainable = False
+        self.resnet50.trainable = True
         
         # Add a classification head
         self.head = [Flatten(),
-                     Dense(200),
+                     Dense(256),
                      BatchNormalization(),
-                     LeakyReLU(),
-                     Dropout(.3),
+                     ReLU(),
+                     Dropout(.25),
                      Dense(hp.num_classes, activation='softmax')]
         
         

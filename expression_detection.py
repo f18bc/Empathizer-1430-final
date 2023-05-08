@@ -1,12 +1,40 @@
 import numpy as np
 import cv2
-from keras.models import load_model
+import tensorflow as tf
 
-# Load the Haar Cascade for face detection
+import os
+import sys
+import argparse
+import re
+from datetime import datetime
+import tensorflow as tf
+
+import hyperparameter as hp
+from models import YourModel, VGGModel, MobileNetModel, ResNetModel , EfficientNet
+from preprocess import Datasets
+from skimage.transform import resize
+from tensorboard_utils import \
+        ImageLabelingLogger, ConfusionMatrixLogger, CustomModelSaver
+from skimage.io import imread
+from lime import lime_image
+from skimage.segmentation import mark_boundaries
+from matplotlib import pyplot as plt
+import numpy as np
+
+
+model = YourModel()
+load_checkpoint = os.path.abspath('checkpoints/your_model/050823-053020/your.weights.e028-acc0.6100.h5')
+#model = MobileNetModel()
+#load_checkpoint = os.path.abspath('checkpoints/mobilenet_model/050723-235439/mobilenet.weights.e026-acc0.6956.h5')
+#model = VGGModel()
+#load_checkpoint = os.path.abspath("checkpoints/vgg_model/050823-025153/vgg.weights.e028-acc0.6571.h5")
+#model = ResNetModel()
+#load_checkpoint = os.path.abspath("checkpoints/resnet_model/050823-190449/resnet.weights.e029-acc0.7075.h5")
+model(tf.keras.Input(shape=(48, 48, 3)))
+model.load_weights(load_checkpoint, by_name=False)
+
+
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-
-# Load the pretrained Mini-Xception for facial expression recognition
-model = load_model('test/fer2013_mini_XCEPTION.119-0.65.hdf5')
 
 # Expression labels
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
@@ -19,7 +47,7 @@ expression = ""
 while True:
     ret, frame = cap.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+    faces = face_cascade.detectMultiScale(frame, 1.3, 5)
 
     for (x, y, w, h) in faces:
         cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
@@ -30,13 +58,19 @@ while True:
 
         # Predict the expression every 24 frames
         if frame_counter % 24 == 0:
-            prediction = model.predict(face_crop)
+            
+            print(face_crop.shape)
+            f = cv2.merge((face_crop,face_crop,face_crop))
+            f = np.reshape(f,(-1,48,48,3))
+            print(f.shape)
+            prediction = model.predict(f)
+            
             max_index = int(np.argmax(prediction))
             expression = labels[max_index]
 
         # Display the expression
         cv2.putText(frame, expression, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 0, 0), 2)
-
+    
     # Display the frame
     cv2.imshow('Real-time Face Detection and Expression Recognition', frame)
 

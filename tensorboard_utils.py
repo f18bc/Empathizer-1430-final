@@ -236,28 +236,31 @@ class CustomModelSaver(tf.keras.callbacks.Callback):
                        "maximum TEST accuracy.\nSaving checkpoint at {location}")
                        .format(epoch + 1, cur_acc, location = save_location))
                 # Only save weights of classification head of mobilnet
-                self.model.head.save_weights(save_location)
+                self.model.save_weights(save_location)
+                self.model.save('Empathizer.h5', save_format="tf")#, save_format="tf")
             elif self.task == '3':
                 save_location = self.checkpoint_dir + os.sep + "vgg." + save_name
                 print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous "
                        "maximum TEST accuracy.\nSaving checkpoint at {location}")
                        .format(epoch + 1, cur_acc, location = save_location))
                 # Only save weights of classification head of VGGModel
-                self.model.head.save_weights(save_location)
+                self.model.save_weights(save_location)
             elif self.task == '4':
                 save_location = self.checkpoint_dir + os.sep + "resnet." + save_name
                 print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous "
                        "maximum TEST accuracy.\nSaving checkpoint at {location}")
                        .format(epoch + 1, cur_acc, location = save_location))
                 # Only save weights of classification head of resnet
-                self.model.head.save_weights(save_location)
+                self.model.save_weights(save_location)   
+                
             else:
                 save_location = self.checkpoint_dir + os.sep + "efficientnet." + save_name
                 print(("\nEpoch {0:03d} TEST accuracy ({1:.4f}) EXCEEDED previous "
                        "maximum TEST accuracy.\nSaving checkpoint at {location}")
                        .format(epoch + 1, cur_acc, location = save_location))
                 # Only save weights of classification head of efficientnet
-                self.model.head.save_weights(save_location)
+                # self.model.head.save_weights(save_location)
+                self.model.save_weights(save_location)
 
             # Ensure max_num_weights is not exceeded by removing
             # minimum weight

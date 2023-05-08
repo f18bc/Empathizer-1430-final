@@ -33,7 +33,7 @@ class Datasets():
 
         # Setup data generators: feed data to the training and testing routine based on the dataset
         # task == '2': using a pretrained vgg with our own head
-        # task == '3': using a pretrained mobilnet with our own head
+        # task == '3': using a pretrained mobilenet with our own head
             
         self.train_data = self.get_data(
             os.path.join(self.data_path, "train/"), task=='2'or task=='3' or task=='4' or task=='5', shuffle = True, augment = True)

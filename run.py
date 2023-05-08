@@ -280,7 +280,7 @@ def main():
         if ARGS.task == '1':
             model.load_weights(ARGS.load_checkpoint, by_name=False)
         else:
-            model.head.load_weights(ARGS.load_checkpoint, by_name=False)
+            model.load_weights(ARGS.load_checkpoint, by_name=False)
 
     # Make checkpoint directory if needed
     if not ARGS.evaluate and not os.path.exists(checkpoint_path):
@@ -294,7 +294,10 @@ def main():
 
     if ARGS.evaluate:
         test(model, datasets.test_data)
+        print(model)
+        
 
+        
         # TODO: change the image path to be the image of your choice by changing
         # the lime-image flag when calling run.py to investigate
         # i.e. python run.py --evaluate --lime-image test/Bedroom/image_003.jpg
