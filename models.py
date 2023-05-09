@@ -48,25 +48,7 @@ class YourModel(tf.keras.Model):
               Dropout(0.2),
               Dense(units = hp.num_classes, activation = "softmax")   
               
-              # Alternative structure
-            #   Conv2D(filters = 64, kernel_size = 3, activation = 'relu', padding="same"),
-            #   MaxPool2D(pool_size = 2),
-            #   Conv2D(filters = 128, kernel_size = 3, activation = 'relu', padding="same"),
-            #   MaxPool2D(pool_size = 2),
-            #   Conv2D(filters = 256, kernel_size = 3, activation = 'relu', padding="same"),
-            #   MaxPool2D(pool_size = 2),
-            #   Conv2D(filters = 512, kernel_size = 3, activation = 'relu', padding="same"),
-            #   MaxPool2D(pool_size = 2),
-            #   Flatten(),
-            #   Dense(units = 400, activation = "relu"),
-            #   Dropout(0.1),
-            #   Dense(units = 200, activation = "relu"),
-            #   Dropout(0.1),
-            #   Dense(units = 150, activation = "relu"),
-            #   Dropout(0.1),
-            #   Dense(units = 100, activation = "relu"),
-            #   Dropout(0.1),
-            #   Dense(units = hp.num_classes, activation="softmax")
+              
               
         ]
 
@@ -110,20 +92,7 @@ class MobileNetModel(tf.keras.Model):
                      BatchNormalization(),
                      LeakyReLU(),
                      Dense(hp.num_classes, activation='softmax')]
-        #self.head = [Flatten(),
-        #             Dense(units = 1024),
-        #             BatchNormalization(),
-        #             ReLU(),
-        #             Dropout(.4),
-        #             Dense(units = 512),
-        #             BatchNormalization(),
-        #             ReLU(),
-        #             Dropout(.3),
-        #             Dense(units = 256),
-        #             BatchNormalization(),
-        #             ReLU(),
-        #             Dropout(.2),
-        #             Dense(hp.num_classes, activation='softmax')]
+        
         self.head = tf.keras.Sequential(self.head, name="mbt_head") # mobilenet head
         tf.keras.utils.get_custom_objects()['MobileNetModel'] = MobileNetModel
         
