@@ -31,6 +31,7 @@ load_checkpoint = os.path.abspath('checkpoints/your_model/050823-053020/your.wei
 #model = MobileNetModel()
 #load_checkpoint = os.path.abspath('checkpoints/mobilenet_model/050723-235439/mobilenet.weights.e026-acc0.6956.h5')
 
+
 ## VGG Model
 #model = VGGModel()
 #load_checkpoint = os.path.abspath("checkpoints/vgg_model/050823-025153/vgg.weights.e028-acc0.6571.h5")
@@ -43,6 +44,7 @@ model.load_weights(load_checkpoint, by_name=False)
 
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
 
 # Expression labels
 labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
